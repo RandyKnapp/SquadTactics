@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +23,7 @@ public class ContentNavigator : MonoBehaviour
 	{
 		foreach (var entry in Data)
 		{
-			var navButton = GameObject.Instantiate(entry.NavigationPrefab);
+			var navButton = Instantiate(entry.NavigationPrefab);
 			navButton.transform.SetParent(NavigationContainer.transform, false);
 
 			var entryCopy = entry;
@@ -50,7 +49,7 @@ public class ContentNavigator : MonoBehaviour
 			return;
 		}
 		
-		var content = GameObject.Instantiate(entry.ContentPrefab);
+		var content = Instantiate(entry.ContentPrefab);
 		content.transform.SetParent(ContentContainer.transform, false);
 	}
 
@@ -58,7 +57,7 @@ public class ContentNavigator : MonoBehaviour
 	{
 		foreach (Transform child in ContentContainer.transform)
 		{
-			GameObject.Destroy(child.gameObject);
+			Destroy(child.gameObject);
 		}
 	}
 }
