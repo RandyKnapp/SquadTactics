@@ -10,17 +10,6 @@ public class SceneTransitionManager : MonoBehaviour
 	private Canvas _rootCanvas;
 
 	private GameObject _loadingScreen;
-	
-	private void Awake ()
-	{
-		DontDestroyOnLoad(gameObject);
-
-		var sceneManagers = GameObject.FindGameObjectsWithTag("SceneManager");
-		if (sceneManagers.Length > 1)
-		{
-			Destroy(gameObject);
-		}
-	}
 
 	public void ChangeScene(string scene)
 	{
