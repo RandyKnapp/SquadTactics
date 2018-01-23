@@ -13,6 +13,7 @@ public class SquadMenuController : MonoBehaviour
 	private Text _tempDataDisplay;
 
 	private CharacterData _data;
+	private SoldierController _soldier;
 
 	private void Awake()
 	{
@@ -29,6 +30,14 @@ public class SquadMenuController : MonoBehaviour
 	{
 		_data = data;
 		_tempDataDisplay.text = "Body: \n- " + _data.Body + "\nColor: \n- " + _data.Color + "\nWeapon: \n- " + _data.Weapon;
+
+		if (_soldier == null)
+		{
+			GameObject soldierObject = GameObject.FindGameObjectWithTag("SoldierDummy");
+			_soldier = soldierObject.GetComponent<SoldierController>();
+		}
+		
+		_soldier.SetData(_data);
 	}
 
 	private void OnEditAreaClosed(CharacterData data)
