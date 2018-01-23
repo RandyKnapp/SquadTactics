@@ -36,6 +36,8 @@ public enum Weapon
 [Serializable]
 public struct CharacterData
 {
+	public string FirstName;
+	public string LastName;
 	public BodyType Body;
 	public UniformColor Color;
 	public Weapon Weapon;

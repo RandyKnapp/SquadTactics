@@ -18,26 +18,35 @@ public class ContentNavigator : MonoBehaviour
 	private GameObject NavigationContainer;
 	[SerializeField]
 	private List<ContentNavigatorData> Data;
+
+	private int _current;
 	
 	public void Start()
 	{
-		foreach (var entry in Data)
+		for (var index = 0; index < Data.Count; index++)
 		{
+			var entry = Data[index];
 			var navButton = Instantiate(entry.NavigationPrefab);
 			navButton.transform.SetParent(NavigationContainer.transform, false);
 
-			var entryCopy = entry;
-			navButton.GetComponent<Button>().onClick.AddListener(() => OnNavButtonClicked(entryCopy));
+			navButton.GetComponent<Button>().onClick.AddListener(() => OnNavButtonClicked(entry, index));
 		}
 
 		if (Data.Count > 0)
 		{
+			_current = 0;
 			SetContents(Data[0]);
 		}
 	}
 
-	private void OnNavButtonClicked(ContentNavigatorData entry)
+	private void OnNavButtonClicked(ContentNavigatorData entry, int index)
 	{
+		if (index == _current)
+		{
+			return;
+		}
+
+		_current = index;
 		RemoveContents();
 		SetContents(entry);
 	}
