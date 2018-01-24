@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SquadMenuController : MonoBehaviour
+public class CharacterDetailsController : MonoBehaviour
 {
 	[SerializeField]
 	private Button _editButton;
@@ -11,21 +12,38 @@ public class SquadMenuController : MonoBehaviour
 	private CharacterEditController _editController;
 	[SerializeField]
 	private Text _nameDisplay;
+	[SerializeField]
+	private Button _closeButton;
+	[SerializeField]
+	private SoldierPortrait _portrait; 
 
 	private CharacterData _data;
 	private SoldierController _soldier;
+	
+	[NonSerialized]
+	public Action<CharacterData> OnClose = delegate {};
 
 	private void Awake()
 	{
-		_data.FirstName = "Guy";
-		_data.LastName = "McAwesome";
-		
 		_editController.gameObject.SetActive(false);
 		_editController.OnDataChanged += OnDataChanged;
 		_editController.OnClose += OnEditAreaClosed;
 		
 		_editButton.onClick.AddListener(OnEditClick);
+		_closeButton.onClick.AddListener(OnCloseButtonClick);
 
+		OnDataChanged(_data);
+	}
+
+	private void OnCloseButtonClick()
+	{
+		OnClose(_data);
+		DialogManager.PopDialog();
+	}
+
+	public void SetData(CharacterData data)
+	{
+		_data = data;
 		OnDataChanged(_data);
 	}
 
@@ -33,6 +51,7 @@ public class SquadMenuController : MonoBehaviour
 	{
 		_data = data;
 		_nameDisplay.text = _data.FirstName + " " + _data.LastName;
+		_portrait.SetData(_data);
 
 		if (_soldier == null)
 		{

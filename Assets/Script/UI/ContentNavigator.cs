@@ -38,6 +38,7 @@ public class ContentNavigator : MonoBehaviour
 		if (Data.Count > 0)
 		{
 			_current = _initialContent;
+			RemoveContents();
 			SetContents(Data[_initialContent]);
 		}
 	}

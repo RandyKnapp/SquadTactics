@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsHudDialog : MonoBehaviour
@@ -21,7 +19,7 @@ public class SettingsHudDialog : MonoBehaviour
 
 	private void OnCloseClick()
 	{
-		Destroy(gameObject);
+		DialogManager.PopDialog();
 	}
 	
 	private void OnQuitClick()

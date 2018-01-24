@@ -5,8 +5,6 @@ public class SettingsHudButton : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _dialogPrefab;
-	[SerializeField]
-	private Canvas _rootCanvas;
 	
 	private void Start()
 	{
@@ -16,7 +14,6 @@ public class SettingsHudButton : MonoBehaviour
 
 	private void OnClick()
 	{
-		var dialog = Instantiate(_dialogPrefab);
-		dialog.transform.SetParent(_rootCanvas.transform, false);
+		DialogManager.CreateDialog(_dialogPrefab);
 	}
 }
