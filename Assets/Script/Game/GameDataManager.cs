@@ -56,4 +56,10 @@ public static class GameDataManager
 	{
 		return Application.persistentDataPath + "/save.sav";
 	}
+
+	public static void Reset()
+	{
+		_currentGame.Reset();
+		Save();
+	}
 }

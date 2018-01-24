@@ -46,21 +46,19 @@ public class GameData
 {
 	[SerializeField]
 	private int _coins;
+
 	[SerializeField]
 	private int _gems;
+
 	[SerializeField]
 	private Roster _roster = new Roster();
 
-	public event Action OnDataChanged = delegate { };
+	[NonSerialized]
+	public Action OnDataChanged = delegate { };
 
 	public GameData()
 	{
-		_coins = 100;
-		_gems = 0;
-		for (int i = 0; i < 4; i++)
-		{
-			AddStartingSoldier();
-		}
+		Reset();
 	}
 
 	public int Coins
@@ -76,7 +74,11 @@ public class GameData
 	public int Gems
 	{
 		get { return _gems; }
-		set { _gems = value; }
+		set
+		{
+			_gems = value;
+			OnDataChanged();
+		}
 	}
 
 	public Roster Roster
@@ -94,5 +96,17 @@ public class GameData
 			, Color = (UniformColor) NameRandomizer.GetRandInt(0, Enum.GetNames(typeof(UniformColor)).Length)
 		};
 		_roster.Soldiers.Add(character);
+	}
+
+	public void Reset()
+	{
+		_coins = 100;
+		_gems = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			AddStartingSoldier();
+		}
+
+		OnDataChanged();
 	}
 }
