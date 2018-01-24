@@ -13,9 +13,11 @@ internal struct ContentNavigatorData
 public class ContentNavigator : MonoBehaviour
 {
 	[SerializeField]
-	private GameObject ContentContainer;
+	private GameObject _contentContainer;
 	[SerializeField]
-	private GameObject NavigationContainer;
+	private GameObject _navigationContainer;
+	[SerializeField]
+	private int _initialContent = 0;
 	[SerializeField]
 	private List<ContentNavigatorData> Data;
 
@@ -27,15 +29,16 @@ public class ContentNavigator : MonoBehaviour
 		{
 			var entry = Data[index];
 			var navButton = Instantiate(entry.NavigationPrefab);
-			navButton.transform.SetParent(NavigationContainer.transform, false);
+			navButton.transform.SetParent(_navigationContainer.transform, false);
 
-			navButton.GetComponent<Button>().onClick.AddListener(() => OnNavButtonClicked(entry, index));
+			var indexCopy = index;
+			navButton.GetComponent<Button>().onClick.AddListener(() => OnNavButtonClicked(entry, indexCopy));
 		}
 
 		if (Data.Count > 0)
 		{
-			_current = 0;
-			SetContents(Data[0]);
+			_current = _initialContent;
+			SetContents(Data[_initialContent]);
 		}
 	}
 
@@ -59,12 +62,12 @@ public class ContentNavigator : MonoBehaviour
 		}
 		
 		var content = Instantiate(entry.ContentPrefab);
-		content.transform.SetParent(ContentContainer.transform, false);
+		content.transform.SetParent(_contentContainer.transform, false);
 	}
 
 	private void RemoveContents()
 	{
-		foreach (Transform child in ContentContainer.transform)
+		foreach (Transform child in _contentContainer.transform)
 		{
 			Destroy(child.gameObject);
 		}
