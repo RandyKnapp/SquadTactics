@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 public class RosterContentController : MonoBehaviour
 {
 	[SerializeField]
-	private Button _soldiersButton;
+	private CharacterType _characterType;
 	[SerializeField]
 	private ScrollRect _scrollView;
 	[SerializeField]
@@ -14,21 +15,44 @@ public class RosterContentController : MonoBehaviour
 	[SerializeField]
 	private Text _countText;
 	[SerializeField]
-	private GameObject _soldierTilePrefab;
+	private GameObject _characterTilePrefab;
 
 	private void Awake()
 	{
-		var gameData = GameDataManager.GetGameData();
+		var characters = GetCharacterList();
 
-		_subtitleText.text = "Soldiers";
-		_countText.text = gameData.Roster.Soldiers.Count.ToString();
+		SetSubtitle();
+		_countText.text = characters.Count.ToString();
 
-		foreach (var soldierData in gameData.Roster.Soldiers)
+		foreach (var characterData in characters)
 		{
-			CharacterTileController soldierTile = Instantiate(_soldierTilePrefab).GetComponent<CharacterTileController>();
-			soldierTile.SetData(soldierData);
+			CharacterTileController characterTile = Instantiate(_characterTilePrefab).GetComponent<CharacterTileController>();
+			characterTile.SetData(characterData);
 			
-			soldierTile.transform.SetParent(_scrollView.content, false);
+			characterTile.transform.SetParent(_scrollView.content, false);
 		}
+	}
+
+	private List<CharacterData> GetCharacterList()
+	{
+		var gameData = GameDataManager.GetGameData();
+		
+		switch (_characterType)
+		{
+			default:
+			case CharacterType.Soldier:
+				return gameData.Roster.Soldiers;
+			case CharacterType.Scientist:
+				return gameData.Roster.Scientists;
+			case CharacterType.Engineer:
+				return gameData.Roster.Engineers;
+			case CharacterType.Leader:
+				return gameData.Roster.Leaders;
+		}
+	}
+
+	private void SetSubtitle()
+	{
+		_subtitleText.text = _characterType.ToString() + "s";
 	}
 }

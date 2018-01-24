@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +36,8 @@ public class CharacterEditController : MonoBehaviour
 	private GameObject _weaponActiveTab;
 	[SerializeField]
 	private Text _dataLabel;
+	[SerializeField]
+	private InputField _nameInput;
 
 	public event Action<CharacterData> OnDataChanged = delegate{};
 	public event Action<CharacterData> OnClose = delegate{};
@@ -59,14 +62,31 @@ public class CharacterEditController : MonoBehaviour
 		_initialData = initialData;
 		_currentData = initialData;
 
+		_nameInput.text = _currentData.FirstName + " " + _currentData.LastName;
+
 		_mode = CharacterEditMode.Body;
 		RefreshEditArea();
 	}
 
 	private void OnConfirmClick()
 	{
+		ConfirmName();
 		OnDataChanged(_currentData);
 		OnClose(_currentData);
+	}
+
+	private void ConfirmName()
+	{
+		var fullName = _nameInput.text;
+		if (fullName == "")
+		{
+			_currentData.FirstName = _currentData.LastName = "";
+		}
+
+		var nameParts = fullName.Split(' ');
+		_currentData.FirstName = nameParts[0];
+		string[] lastNameParts = nameParts.Skip(1).ToArray();
+		_currentData.LastName = nameParts.Length > 1 ? string.Join(" ", lastNameParts) : "";
 	}
 
 	private void OnCancelClick()

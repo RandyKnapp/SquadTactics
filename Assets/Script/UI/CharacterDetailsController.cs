@@ -67,12 +67,14 @@ public class CharacterDetailsController : MonoBehaviour
 		OnDataChanged(data);
 		
 		_editButton.gameObject.SetActive(true);
+		_closeButton.gameObject.SetActive(true);
 		_editController.gameObject.SetActive(false);
 	}
 
 	private void OnEditClick()
 	{
 		_editButton.gameObject.SetActive(false);
+		_closeButton.gameObject.SetActive(false);
 		
 		_editController.Initialize(_data);
 		_editController.gameObject.SetActive(true);

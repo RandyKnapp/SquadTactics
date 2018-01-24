@@ -14,6 +14,12 @@ public class SoldierPortraitData : ScriptableObject
 {
 	[SerializeField]
 	private List<PortraitList> _portraits= new List<PortraitList>();
+	[SerializeField]
+	private Sprite _scientistPortrait;
+	[SerializeField]
+	private Sprite _engineerPortrait;
+	[SerializeField]
+	private Sprite _leaderPortrait;
 
 	[MenuItem("Assets/Create/SoldierPortraitData")]
 	public static void CreateAsset()
@@ -21,25 +27,32 @@ public class SoldierPortraitData : ScriptableObject
 		ScriptableObjectUtility.CreateAsset<SoldierPortraitData>();
 	}
 
-	public Sprite GetPortrait(BodyType body, UniformColor color)
+	public Sprite GetPortrait(CharacterData data)
 	{
-		var bodyIndex = (int) body;
-		var colorIndex = (int)color;
-
-		if (bodyIndex < _portraits.Count)
+		if (data.Type == CharacterType.Soldier)
 		{
-			PortraitList list = _portraits[bodyIndex];
-			if (colorIndex < list.Portraits.Count)
+			var bodyIndex = (int)data.Body;
+			var colorIndex = (int)data.Color;
+
+			if (bodyIndex < _portraits.Count)
 			{
-				return list.Portraits[colorIndex];
+				PortraitList list = _portraits[bodyIndex];
+				if (colorIndex < list.Portraits.Count)
+				{
+					return list.Portraits[colorIndex];
+				}
+			}
+		}
+		else
+		{
+			switch (data.Type)
+			{
+				case CharacterType.Scientist: return _scientistPortrait;
+				case CharacterType.Engineer: return _engineerPortrait;
+				case CharacterType.Leader: return _leaderPortrait;
 			}
 		}
 
 		return new Sprite();
-	}
-
-	public Sprite GetPortrait(CharacterData data)
-	{
-		return GetPortrait(data.Body, data.Color);
 	}
 }

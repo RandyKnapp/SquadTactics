@@ -34,8 +34,18 @@ public enum Weapon
 }
 
 [Serializable]
+public enum CharacterType
+{
+	Soldier,
+	Scientist,
+	Engineer,
+	Leader
+}
+
+[Serializable]
 public struct CharacterData
 {
+	public CharacterType Type;
 	public string FirstName;
 	public string LastName;
 	public BodyType Body;
