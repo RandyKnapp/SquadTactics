@@ -14,7 +14,7 @@ public class CharacterTileController : MonoBehaviour
 	[SerializeField]
 	private GameObject _dialogPrefab;
 
-	private CharacterData _data;
+	private CharacterInstance _instance;
 
 	private void Awake()
 	{
@@ -24,17 +24,20 @@ public class CharacterTileController : MonoBehaviour
 	private void OnClick()
 	{
 		CharacterDetailsController dialog = Instantiate(_dialogPrefab).GetComponent<CharacterDetailsController>();
-		dialog.SetData(_data);
-		dialog.OnClose += SetData;
+		dialog.SetCharacter(_instance);
+		dialog.OnClose += SetCharacter;
 		
 		DialogManager.PushDialog(dialog.gameObject);
 	}
 
-	public void SetData(CharacterData data)
+	public void SetCharacter(CharacterInstance instance)
 	{
-		_data = data;
-		
-		_nameDisplay.text = _data.FirstName + " " + _data.LastName;
-		_portrait.SetData(_data);
+		_instance = instance;
+
+		if (_instance != null)
+		{
+			_nameDisplay.text = _instance.GetName();
+			_portrait.SetData(_instance.Data);
+		}
 	}
 }

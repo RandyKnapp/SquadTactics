@@ -27,13 +27,13 @@ public class RosterContentController : MonoBehaviour
 		foreach (var characterData in characters)
 		{
 			CharacterTileController characterTile = Instantiate(_characterTilePrefab).GetComponent<CharacterTileController>();
-			characterTile.SetData(characterData);
+			characterTile.SetCharacter(characterData);
 			
 			characterTile.transform.SetParent(_scrollView.content, false);
 		}
 	}
 
-	private List<CharacterData> GetCharacterList()
+	private List<CharacterInstance> GetCharacterList()
 	{
 		var gameData = GameDataManager.GetGameData();
 		

@@ -30,7 +30,7 @@ public class SoldierController : MonoBehaviour
 
 	private void RefreshModel()
 	{
-		int bodyIndex = (int) _data.Body;
+		int bodyIndex = (int)_data.Body;
 		for (int i = 0; i < _bodyModels.Count; i++)
 		{
 			_bodyModels[i].SetActive(bodyIndex == i);
@@ -39,7 +39,7 @@ public class SoldierController : MonoBehaviour
 		_animator = _bodyModels[bodyIndex].GetComponent<Animator>();
 		_mesh = _bodyModels[bodyIndex].GetComponentInChildren<SkinnedMeshRenderer>();
 		
-		int colorIndex = (int) _data.Color;
+		int colorIndex = (int)_data.Color;
 		_mesh.material = _colorMaterials[bodyIndex].Materials[colorIndex];
 	}
 

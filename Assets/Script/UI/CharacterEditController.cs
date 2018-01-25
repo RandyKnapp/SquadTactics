@@ -44,7 +44,8 @@ public class CharacterEditController : MonoBehaviour
 
 	private CharacterEditMode _mode = CharacterEditMode.Body;
 	private CharacterData _currentData;
-	private CharacterData _initialData;
+	private CharacterData _initialDataCopy;
+	private CharacterInstance _characterInstance;
 
 	private void Awake()
 	{
@@ -57,10 +58,11 @@ public class CharacterEditController : MonoBehaviour
 		_weaponInactiveTab.onClick.AddListener(OnWeaponTabClick);
 	}
 
-	public void Initialize(CharacterData initialData)
+	public void Initialize(CharacterInstance instance)
 	{
-		_initialData = initialData;
-		_currentData = initialData;
+		_characterInstance = instance;
+		_initialDataCopy = _characterInstance.Data;
+		_currentData = _characterInstance.Data;
 
 		_nameInput.text = _currentData.FirstName + " " + _currentData.LastName;
 
@@ -71,8 +73,10 @@ public class CharacterEditController : MonoBehaviour
 	private void OnConfirmClick()
 	{
 		ConfirmName();
-		OnDataChanged(_currentData);
-		OnClose(_currentData);
+		_characterInstance.Data = _currentData;
+		OnDataChanged(_characterInstance.Data);
+		OnClose(_characterInstance.Data);
+		GameDataManager.Save();
 	}
 
 	private void ConfirmName()
@@ -91,8 +95,9 @@ public class CharacterEditController : MonoBehaviour
 
 	private void OnCancelClick()
 	{
-		OnDataChanged(_initialData);
-		OnClose(_initialData);
+		_characterInstance.Data = _initialDataCopy;
+		OnDataChanged(_characterInstance.Data);
+		OnClose(_characterInstance.Data);
 	}
 
 	private void OnLeftClick()

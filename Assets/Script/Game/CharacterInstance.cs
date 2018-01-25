@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 public enum BodyType
@@ -51,4 +52,28 @@ public struct CharacterData
 	public BodyType Body;
 	public UniformColor Color;
 	public Weapon Weapon;
+}
+
+[Serializable]
+public class CharacterInstance
+{
+	[SerializeField]
+	private Guid _guid;
+
+	public CharacterData Data;
+
+	public CharacterInstance()
+	{
+		_guid = Guid.NewGuid();
+	}
+
+	public Guid Guid
+	{
+		get { return _guid; }
+	}
+
+	public string GetName()
+	{
+		return Data.FirstName + " " + Data.LastName;
+	}
 }

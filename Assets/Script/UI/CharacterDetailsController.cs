@@ -17,11 +17,11 @@ public class CharacterDetailsController : MonoBehaviour
 	[SerializeField]
 	private SoldierPortrait _portrait; 
 
-	private CharacterData _data;
+	private CharacterInstance _instance;
 	private SoldierController _soldier;
 	
 	[NonSerialized]
-	public Action<CharacterData> OnClose = delegate {};
+	public Action<CharacterInstance> OnClose = delegate {};
 
 	private void Awake()
 	{
@@ -31,27 +31,28 @@ public class CharacterDetailsController : MonoBehaviour
 		
 		_editButton.onClick.AddListener(OnEditClick);
 		_closeButton.onClick.AddListener(OnCloseButtonClick);
-
-		OnDataChanged(_data);
 	}
 
 	private void OnCloseButtonClick()
 	{
-		OnClose(_data);
+		OnClose(_instance);
 		DialogManager.PopDialog();
 	}
 
-	public void SetData(CharacterData data)
+	public void SetCharacter(CharacterInstance instance)
 	{
-		_data = data;
-		OnDataChanged(_data);
+		_instance = instance;
+		if (_instance != null)
+		{
+			OnDataChanged(_instance.Data);
+		}
 	}
 
 	private void OnDataChanged(CharacterData data)
 	{
-		_data = data;
-		_nameDisplay.text = _data.FirstName + " " + _data.LastName;
-		_portrait.SetData(_data);
+		_nameDisplay.text = data.FirstName + " " + data.LastName;
+
+		_portrait.SetData(data);
 
 		if (_soldier == null)
 		{
@@ -59,7 +60,7 @@ public class CharacterDetailsController : MonoBehaviour
 			_soldier = soldierObject.GetComponent<SoldierController>();
 		}
 		
-		_soldier.SetData(_data);
+		_soldier.SetData(data);
 	}
 
 	private void OnEditAreaClosed(CharacterData data)
@@ -76,7 +77,7 @@ public class CharacterDetailsController : MonoBehaviour
 		_editButton.gameObject.SetActive(false);
 		_closeButton.gameObject.SetActive(false);
 		
-		_editController.Initialize(_data);
+		_editController.Initialize(_instance);
 		_editController.gameObject.SetActive(true);
 	}
 }

@@ -59,6 +59,10 @@ public static class GameDataManager
 
 	public static void Reset()
 	{
+		if (_currentGame == null)
+		{
+			_currentGame = new GameData();
+		}
 		_currentGame.Reset();
 		Save();
 	}
