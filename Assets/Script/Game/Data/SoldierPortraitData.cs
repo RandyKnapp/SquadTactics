@@ -21,7 +21,7 @@ public class SoldierPortraitData : ScriptableObject
 	[SerializeField]
 	private Sprite _leaderPortrait;
 
-	[MenuItem("Assets/Create/SoldierPortraitData")]
+	[MenuItem("Assets/Create/Scriptable Objects/SoldierPortraitData")]
 	public static void CreateAsset()
 	{
 		ScriptableObjectUtility.CreateAsset<SoldierPortraitData>();
