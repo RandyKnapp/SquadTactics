@@ -65,23 +65,30 @@ public class SoldierController : MonoBehaviour
 
 	private void Update()
 	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-		RaycastHit hit;
-		if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit, 100))
+		if (_agent != null)
 		{
-			_agent.destination = hit.point;
-		}
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-		if (_animator != null)
-		{
-			if (_agent.velocity.sqrMagnitude > 0.1)
+			RaycastHit hit;
+			if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit, 100))
 			{
-				_animator.SetInteger("Movement", 2);
+				_agent.destination = hit.point;
 			}
-			else
+
+			if (_animator != null)
 			{
-				_animator.SetInteger("Movement", 0);
+				if (_agent.velocity.sqrMagnitude >= (5 * 5))
+				{
+					_animator.SetInteger("Movement", 3);
+				}
+				else if (_agent.velocity.sqrMagnitude > 0.1)
+				{
+					_animator.SetInteger("Movement", 2);
+				}
+				else
+				{
+					_animator.SetInteger("Movement", 0);
+				}
 			}
 		}
 	}
