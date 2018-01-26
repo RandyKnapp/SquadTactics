@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [Serializable]
 internal struct ColorMaterials
@@ -15,10 +16,24 @@ public class SoldierController : MonoBehaviour
 	private List<GameObject> _bodyModels;
 	[SerializeField]
 	private List<ColorMaterials> _colorMaterials;
+	[SerializeField]
+	private bool _autoInitialize;
 
 	private CharacterData _data;
 	private Animator _animator;
 	private SkinnedMeshRenderer _mesh;
+	private NavMeshAgent _agent;
+
+	private void Start()
+	{
+		_agent = GetComponent<NavMeshAgent>();
+
+		if (_autoInitialize)
+		{
+			CharacterData data = GameDataManager.GetGameData().Roster.Soldiers[0].Data;
+			SetData(data);
+		}
+	}
 
 	public void SetData(CharacterData data)
 	{
@@ -46,5 +61,28 @@ public class SoldierController : MonoBehaviour
 	private void RefreshAnimator()
 	{
 		_animator.SetInteger("Weapon", (int)_data.Weapon);
+	}
+
+	private void Update()
+	{
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+		RaycastHit hit;
+		if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit, 100))
+		{
+			_agent.destination = hit.point;
+		}
+
+		if (_animator != null)
+		{
+			if (_agent.velocity.sqrMagnitude > 0.1)
+			{
+				_animator.SetInteger("Movement", 2);
+			}
+			else
+			{
+				_animator.SetInteger("Movement", 0);
+			}
+		}
 	}
 }
