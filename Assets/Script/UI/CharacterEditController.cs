@@ -39,8 +39,8 @@ public class CharacterEditController : MonoBehaviour
 	[SerializeField]
 	private InputField _nameInput;
 
-	public event Action<CharacterData> OnDataChanged = delegate{};
-	public event Action<CharacterData> OnClose = delegate{};
+	public event Action<CharacterData> OnDataChanged = delegate { };
+	public event Action<CharacterData> OnClose = delegate { };
 
 	private CharacterEditMode _mode = CharacterEditMode.Body;
 	private CharacterData _currentData;
@@ -107,49 +107,52 @@ public class CharacterEditController : MonoBehaviour
 			case CharacterEditMode.Body:
 			{
 				int total = Enum.GetNames(typeof(BodyType)).Length;
-				int currentValue = (int) _currentData.Body;
+				int currentValue = (int)_currentData.Body;
 				if (currentValue == 0)
 				{
-					_currentData.Body = (BodyType) (total - 1);
+					_currentData.Body = (BodyType)(total - 1);
 				}
 				else
 				{
 					_currentData.Body = _currentData.Body - 1;
 				}
+
 				break;
 			}
 
-		case CharacterEditMode.Color:
+			case CharacterEditMode.Color:
 			{
 				int total = Enum.GetNames(typeof(UniformColor)).Length;
-				int currentValue = (int) _currentData.Color;
+				int currentValue = (int)_currentData.Color;
 				if (currentValue == 0)
 				{
-					_currentData.Color = (UniformColor) (total - 1);
+					_currentData.Color = (UniformColor)(total - 1);
 				}
 				else
 				{
 					_currentData.Color = _currentData.Color - 1;
 				}
+
 				break;
 			}
 
 			case CharacterEditMode.Weapon:
 			{
 				int total = Enum.GetNames(typeof(Weapon)).Length;
-				int currentValue = (int) _currentData.Weapon;
+				int currentValue = (int)_currentData.Weapon;
 				if (currentValue == 0)
 				{
-					_currentData.Weapon = (Weapon) (total - 1);
+					_currentData.Weapon = (Weapon)(total - 1);
 				}
 				else
 				{
 					_currentData.Weapon = _currentData.Weapon - 1;
 				}
+
 				break;
-			}	
+			}
 		}
-		
+
 		OnDataChanged(_currentData);
 		RefreshEditArea();
 	}
@@ -161,23 +164,23 @@ public class CharacterEditController : MonoBehaviour
 			case CharacterEditMode.Body:
 			{
 				int total = Enum.GetNames(typeof(BodyType)).Length;
-				_currentData.Body = (BodyType)(((int) _currentData.Body + 1) % total);
+				_currentData.Body = (BodyType)(((int)_currentData.Body + 1) % total);
 				break;
 			}
 
 			case CharacterEditMode.Color:
 			{
 				int total = Enum.GetNames(typeof(UniformColor)).Length;
-				_currentData.Color = (UniformColor)(((int) _currentData.Color + 1) % total);
+				_currentData.Color = (UniformColor)(((int)_currentData.Color + 1) % total);
 				break;
 			}
 
 			case CharacterEditMode.Weapon:
 			{
 				int total = Enum.GetNames(typeof(Weapon)).Length;
-				_currentData.Weapon = (Weapon)(((int) _currentData.Weapon + 1) % total);
+				_currentData.Weapon = (Weapon)(((int)_currentData.Weapon + 1) % total);
 				break;
-			}	
+			}
 		}
 
 		OnDataChanged(_currentData);
@@ -209,16 +212,16 @@ public class CharacterEditController : MonoBehaviour
 			case CharacterEditMode.Body:
 				_dataLabel.text = _currentData.Body.ToString();
 				break;
-				
+
 			case CharacterEditMode.Color:
 				_dataLabel.text = _currentData.Color.ToString();
 				break;
-				
+
 			case CharacterEditMode.Weapon:
 				_dataLabel.text = _currentData.Weapon.ToString();
 				break;
 		}
-		
+
 		_bodyActiveTab.SetActive(_mode == CharacterEditMode.Body);
 		_bodyInactiveTab.gameObject.SetActive(_mode != CharacterEditMode.Body);
 		_colorActiveTab.SetActive(_mode == CharacterEditMode.Color);
